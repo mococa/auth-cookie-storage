@@ -1,0 +1,37 @@
+{
+  "name": "auth-cookie-storage",
+  "version": "0.0.1",
+  "author": "Luiz Felipe Moureau",
+  "license": "MIT",
+  "homepage": "https://github.com/mococa/auth-cookie-storage",
+  "repository": {
+    "url": "https://github.com/mococa/auth-cookie-storage.git"
+  },
+  "main": "dist",
+  "module": "dist",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npx tsc --build tsconfig.json",
+    "watch": "tsc -w",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "cookie": "^0.5.0",
+    "date-fns": "^2.30.0",
+    "jwt-decode": "^3.1.2"
+  },
+  "devDependencies": {
+    "@types/cookie": "^0.5.1",
+    "@types/date-fns": "^2.6.0",
+    "@types/jwt-decode": "^3.1.0",
+    "@types/node": "^16.14.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "keywords": [
+    "react",
+    "nextjs",
+    "authentication",
+    "cognito"
+  ]
+}
