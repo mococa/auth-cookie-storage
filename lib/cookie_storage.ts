@@ -87,7 +87,7 @@ export class AuthCookieStorage<T extends Partial<CognitoDefaultProps>> {
     return this;
   }
 
-  clearStorage() {
+  clearTokens() {
     if (typeof window === "undefined") {
       console.error("Trying to remove cookie in a server-side environment");
       return;

@@ -1,5 +1,9 @@
 # auth-cookie-storage
 
+This library aims first to facilitate cognito implementation in applications.
+
+It's also agnostic to frameworks or libraries.
+
 ### Installation
 
 ```bash
@@ -16,8 +20,8 @@ You can clear tokens, set new ones, read, decode and check if it's expired (so y
 
 ```tsx
 interface User {
-    sub: string;
-    email: string;
+  sub: string;
+  email: string;
 }
 
 const auth = new AuthCookieStorage<User>({ prefix: "@my-app" });
@@ -121,7 +125,6 @@ interface AuthContextData {
 
   handleResetAuth: () => void;
 
-  handleRefreshTokens: () => Promise<void>;
   handleSignIn: ({
     access_token,
     id_token,
@@ -162,7 +165,7 @@ export const AuthProvider: React.FC<Props> = ({
 
   /* ----------- Callbacks ----------- */
   const handleResetAuth = useCallback(() => {
-    auth.clearStorage();
+    auth.clearTokens();
 
     setUser({} as User);
 
@@ -170,7 +173,7 @@ export const AuthProvider: React.FC<Props> = ({
   }, []);
 
   const handleSignIn = useCallback(
-    async ({
+    ({
       access_token,
       id_token,
       refresh_token,
@@ -189,7 +192,7 @@ export const AuthProvider: React.FC<Props> = ({
 
       setUser(decoded.user);
 
-      await replace("/protected-page");
+      replace("/protected-page");
     },
     [replace]
   );
@@ -200,12 +203,15 @@ export const AuthProvider: React.FC<Props> = ({
       refresh_token,
       keep,
     }: AuthenticationContext.Handlers.SignIn) => {
+      // Return if already checked the expiration in this route
       if (session_check.current) return;
       session_check.current = true;
 
       try {
+        // Return it's not expired
         if (!auth.isExpired()) return;
 
+        // Get new tokens
         const { data } = await services.authentication.refresh_tokens({
           access_token,
           refresh_token,
